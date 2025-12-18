@@ -1,4 +1,32 @@
+# 1. CORE COMPATIBILITY PINS
+# Keep numpy < 2.0 for PyTorch 2.1 compatibility
+numpy<2.0
+
+# Pin transformers to avoid _pytree error
+transformers==4.36.2
+
+# Pin OpenCV to 4.9 to ensure it works with numpy 1.x
+opencv-python-headless==4.9.0.80
+
+# Pin accelerate to a stable version compatible with these
+accelerate==0.20.3
+
+# 2. APPLICATION DEPENDENCIES
+# Pin the SDK to 2.0.0 to avoid the recent OpenCV 4.12 requirement
+label-studio-sdk==2.0.0
+
+# Add flask for the API
+flask
+
+# Add semver for the local code
+semver
+
+# Add colorama for the local code
+colorama
+
+
+
 gunicorn==23.0.0
-label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git@master
 olefile==0.47
-accelerate==1.6.0
+
+rq

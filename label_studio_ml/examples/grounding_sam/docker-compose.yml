@@ -1,5 +1,3 @@
-version: "3.11"
-
 services:
   grounding_sam:
     container_name: grounding_sam
@@ -45,3 +43,4 @@ services:
       - "./data/ml-backend:/data"
       - "./prompt.txt:/app/prompt.txt"
       - ./dino.py:/app/dino.py
+      - ../../../label_studio_ml:/app/label_studio_ml

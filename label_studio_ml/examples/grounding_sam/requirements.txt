@@ -1,12 +1,39 @@
-gunicorn==23.0.0
-label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git@master
-mobile-sam @ git+https://github.com/ChaoningZhang/MobileSAM.git
-# torch -- inherited from GroundingDINO repo
-# torchvision -- inherited from GroundingDINO repo
-# opencv-python -- inherited from GroundingDINO repo
+# 1. CORE COMPATIBILITY PINS
+# Use latest compatible versions - PyTorch 2.4 supports NumPy 2.x
+numpy
+
+# Pin transformers to avoid _pytree error
+transformers==4.36.2
+
+# Use OpenCV compatible with NumPy 2.x
+opencv-python-headless
+
+# Pin accelerate to a stable version compatible with these
+accelerate==0.20.3
+
+# 2. APPLICATION DEPENDENCIES
+# Pin the SDK to 2.0.0 FIRST to avoid the recent OpenCV 4.12 requirement
+label-studio-sdk==2.0.0
+
+# label-studio-ml is copied locally in Dockerfile
+
+# Segment Anything Model
 segment-anything==1.0
+
+boto3>=1.26.103,<2.0.0
+openmim~=0.3.9
+mmcv>=2.0.0rc4,<2.2.0
+
+# Add flask for the API
+flask
+
+# Add semver for the local code
+semver
+
+# Add colorama for the local code
+colorama
+
+gunicorn==23.0.0
 olefile==0.47
-# networkx==2.8.8
-accelerate==1.6.0
 
-
+rq

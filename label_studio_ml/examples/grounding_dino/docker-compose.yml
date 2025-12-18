@@ -6,7 +6,8 @@ services:
     image: heartexlabs/label-studio-ml-backend:grnddino-master
     init: true
     build:
-      context: .
+      context: ../..
+      dockerfile: examples/grounding_dino/Dockerfile
       args:
         TEST_ENV: ${TEST_ENV}
 # Increase the memory limit if you USE_SAM=true on CPU machine

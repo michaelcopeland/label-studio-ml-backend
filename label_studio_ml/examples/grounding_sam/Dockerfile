@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-devel
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-devel
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TEST_ENV
 
@@ -22,13 +22,17 @@ ENV PYTHONUNBUFFERED=1 \
     WORKERS=2 \
     THREADS=4 \
     CUDA_HOME=/usr/local/cuda \
-    GROUNDINGDINO_REPO_PATH=/GroundingDINO
+    GROUNDINGDINO_REPO_PATH=/GroundingDINO \
+    PYTHONPATH=/app
 ENV PATH="${CUDA_HOME}/bin:${PATH}"
 ENV TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX;8.9;9.0"
 
-COPY requirements.txt .
+COPY examples/grounding_sam/requirements.txt .
 RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
     pip3 install --no-cache-dir -r requirements.txt
+
+# Copy the local label-studio-ml package
+COPY label_studio_ml /app/label_studio_ml
 
 # install GroundingDINO
 RUN cd / && git clone https://github.com/IDEA-Research/GroundingDINO.git
@@ -44,13 +48,11 @@ RUN wget -q https://github.com/ChaoningZhang/MobileSAM/raw/master/weights/mobile
 RUN wget -q https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
 
 # install test requirements if needed
-COPY requirements-test.txt .
+COPY examples/grounding_sam/requirements-test.txt .
 # build only when TEST_ENV="true"
 RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
     if [ "$TEST_ENV" = "true" ]; then \
       pip3 install -r requirements-test.txt; \
     fi
-
-COPY . ./
 
 CMD ["/app/start.sh"]
